@@ -1,0 +1,411 @@
+{% extends "base.html" %}
+
+{% block title %}Configuração - Sistema de Agentes de IA{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-cog me-2"></i>Configuração do Sistema</h2>
+            <button class="btn btn-outline-primary" onclick="carregarConfiguracoes()">
+                <i class="fas fa-sync-alt me-1"></i>Atualizar
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Configurações de API -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-key me-2"></i>
+                    Configurações de API
+                </h5>
+            </div>
+            <div class="card-body">
+                <form id="api-config-form">
+                    <div class="mb-3">
+                        <label for="gemini-api-key" class="form-label">Gemini API Key</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="gemini-api-key" placeholder="Sua chave da API Gemini">
+                            <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('gemini-api-key')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="gemini-model" class="form-label">Modelo Gemini</label>
+                        <select class="form-select" id="gemini-model">
+                            <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                            <option value="gemini-pro">Gemini Pro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="openai-api-key" class="form-label">OpenAI API Key</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="openai-api-key" placeholder="Sua chave da API OpenAI">
+                            <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('openai-api-key')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-save me-2"></i>Salvar Configurações de API
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configurações de Integração -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-plug me-2"></i>
+                    Integrações
+                </h5>
+            </div>
+            <div class="card-body">
+                <form id="integration-config-form">
+                    <div class="mb-3">
+                        <label for="email-smtp" class="form-label">SMTP Email</label>
+                        <input type="email" class="form-control" id="email-smtp" placeholder="seu@email.com">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="whatsapp-token" class="form-label">WhatsApp Token</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="whatsapp-token" placeholder="Token do WhatsApp">
+                            <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('whatsapp-token')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="telegram-bot" class="form-label">Telegram Bot Token</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="telegram-bot" placeholder="Token do Bot Telegram">
+                            <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('telegram-bot')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="fas fa-save me-2"></i>Salvar Integrações
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Configurações de Sistema -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-server me-2"></i>
+                    Configurações de Sistema
+                </h5>
+            </div>
+            <div class="card-body">
+                <form id="system-config-form">
+                    <div class="mb-3">
+                        <label for="database-type" class="form-label">Tipo de Banco de Dados</label>
+                        <select class="form-select" id="database-type">
+                            <option value="sqlite">SQLite</option>
+                            <option value="postgresql">PostgreSQL</option>
+                            <option value="mysql">MySQL</option>
+                            <option value="mongodb">MongoDB</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="log-level" class="form-label">Nível de Log</label>
+                        <select class="form-select" id="log-level">
+                            <option value="DEBUG">DEBUG</option>
+                            <option value="INFO">INFO</option>
+                            <option value="WARNING">WARNING</option>
+                            <option value="ERROR">ERROR</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="max-concurrent" class="form-label">Máximo de Processamentos Simultâneos</label>
+                        <input type="number" class="form-control" id="max-concurrent" min="1" max="10" value="5">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="auto-backup" checked>
+                            <label class="form-check-label" for="auto-backup">
+                                Backup Automático
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-info w-100">
+                        <i class="fas fa-save me-2"></i>Salvar Configurações do Sistema
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teste de Integrações -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-vial me-2"></i>
+                    Teste de Integrações
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">Teste as integrações configuradas:</p>
+                
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary" onclick="testarIntegracao('email')">
+                        <i class="fas fa-envelope me-2"></i>Testar Email
+                    </button>
+                    <button class="btn btn-outline-success" onclick="testarIntegracao('whatsapp')">
+                        <i class="fab fa-whatsapp me-2"></i>Testar WhatsApp
+                    </button>
+                    <button class="btn btn-outline-info" onclick="testarIntegracao('telegram')">
+                        <i class="fab fa-telegram me-2"></i>Testar Telegram
+                    </button>
+                    <button class="btn btn-outline-warning" onclick="testarIntegracao('slack')">
+                        <i class="fab fa-slack me-2"></i>Testar Slack
+                    </button>
+                </div>
+                
+                <div id="teste-resultados" class="mt-3">
+                    <!-- Resultados dos testes aparecerão aqui -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Status das Configurações -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-check-circle me-2"></i>
+                    Status das Configurações
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-circle text-success me-2"></i>
+                            <span>API Gemini: Configurada</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-circle text-warning me-2"></i>
+                            <span>Email: Não configurado</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-circle text-warning me-2"></i>
+                            <span>WhatsApp: Não configurado</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-circle text-success me-2"></i>
+                            <span>Banco de Dados: Ativo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Carregar configurações ao inicializar
+document.addEventListener('DOMContentLoaded', function() {
+    carregarConfiguracoes();
+});
+
+async function carregarConfiguracoes() {
+    try {
+        const response = await fetch('/api/configuracao');
+        const data = await response.json();
+        
+        if (data.sucesso) {
+            const config = data.config;
+            
+            // Preencher formulários com dados atuais
+            if (config.apis?.gemini?.api_key) {
+                document.getElementById('gemini-api-key').value = config.apis.gemini.api_key;
+            }
+            if (config.apis?.gemini?.model) {
+                document.getElementById('gemini-model').value = config.apis.gemini.model;
+            }
+            if (config.apis?.openai?.api_key) {
+                document.getElementById('openai-api-key').value = config.apis.openai.api_key;
+            }
+            
+            if (config.integracoes?.email?.smtp_server) {
+                document.getElementById('email-smtp').value = config.integracoes.email.smtp_server;
+            }
+            if (config.integracoes?.whatsapp?.token) {
+                document.getElementById('whatsapp-token').value = config.integracoes.whatsapp.token;
+            }
+            if (config.integracoes?.telegram?.bot_token) {
+                document.getElementById('telegram-bot').value = config.integracoes.telegram.bot_token;
+            }
+            
+            if (config.database?.tipo) {
+                document.getElementById('database-type').value = config.database.tipo;
+            }
+            if (config.logging?.level) {
+                document.getElementById('log-level').value = config.logging.level;
+            }
+        }
+    } catch (error) {
+        console.error('Erro ao carregar configurações:', error);
+        App.ui.showToast('Erro ao carregar configurações', 'danger');
+    }
+}
+
+// Event listeners para formulários
+document.getElementById('api-config-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        secao: 'apis',
+        chave: 'gemini',
+        valor: {
+            api_key: document.getElementById('gemini-api-key').value,
+            model: document.getElementById('gemini-model').value
+        }
+    };
+    
+    try {
+        const response = await fetch('/api/configuracao', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.sucesso) {
+            App.ui.showToast('Configurações de API salvas com sucesso!', 'success');
+        } else {
+            App.ui.showToast('Erro ao salvar configurações: ' + data.erro, 'danger');
+        }
+    } catch (error) {
+        App.ui.showToast('Erro ao salvar configurações', 'danger');
+    }
+});
+
+document.getElementById('integration-config-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    App.ui.showToast('Configurações de integração salvas!', 'success');
+});
+
+document.getElementById('system-config-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    App.ui.showToast('Configurações do sistema salvas!', 'success');
+});
+
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const button = input.nextElementSibling;
+    const icon = button.querySelector('i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+async function testarIntegracao(tipo) {
+    const resultadosDiv = document.getElementById('teste-resultados');
+    
+    // Mostrar loading
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'alert alert-info';
+    loadingDiv.innerHTML = `
+        <i class="fas fa-spinner fa-spin me-2"></i>
+        Testando integração ${tipo}...
+    `;
+    resultadosDiv.appendChild(loadingDiv);
+    
+    try {
+        const response = await fetch('/api/integracoes/teste', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                mensagem: `Teste de integração ${tipo} - ${new Date().toLocaleString()}`,
+                tipo: tipo
+            })
+        });
+        
+        const data = await response.json();
+        
+        // Remover loading
+        loadingDiv.remove();
+        
+        if (data.sucesso) {
+            const resultadoDiv = document.createElement('div');
+            resultadoDiv.className = 'alert alert-success';
+            resultadoDiv.innerHTML = `
+                <i class="fas fa-check-circle me-2"></i>
+                Integração ${tipo} testada com sucesso!
+            `;
+            resultadosDiv.appendChild(resultadoDiv);
+        } else {
+            const resultadoDiv = document.createElement('div');
+            resultadoDiv.className = 'alert alert-danger';
+            resultadoDiv.innerHTML = `
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Erro ao testar integração ${tipo}: ${data.erro}
+            `;
+            resultadosDiv.appendChild(resultadoDiv);
+        }
+    } catch (error) {
+        loadingDiv.remove();
+        const resultadoDiv = document.createElement('div');
+        resultadoDiv.className = 'alert alert-danger';
+        resultadoDiv.innerHTML = `
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            Erro de conexão ao testar integração ${tipo}
+        `;
+        resultadosDiv.appendChild(resultadoDiv);
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,120 @@
+
+# 🚀 COMANDOS PARA DEPLOY NA AWS
+
+## 📋 PRÉ-REQUISITOS:
+# 1. Instalar AWS CLI
+pip install awscli
+
+# 2. Configurar credenciais
+aws configure
+# AWS Access Key ID: [sua_access_key]
+# AWS Secret Access Key: [sua_secret_key]
+# Default region name: us-east-1
+# Default output format: json
+
+# 3. Instalar EB CLI
+pip install awsebcli
+
+## 🌟 MÉTODO 1: ELASTIC BEANSTALK (RECOMENDADO)
+
+# Inicializar aplicação EB
+eb init
+
+# Criar ambiente
+eb create production
+
+# Deploy
+eb deploy
+
+# Abrir aplicação
+eb open
+
+# Ver logs
+eb logs
+
+# Configurar variáveis de ambiente
+eb setenv GEMINI_API_KEY=sua_chave_gemini
+eb setenv SECRET_KEY=sua_chave_secreta
+
+## 🖥️ MÉTODO 2: EC2
+
+# 1. Criar instância EC2
+# 2. Conectar via SSH
+ssh -i "sua-key.pem" ubuntu@ec2-xx-xx-xx-xx.compute-1.amazonaws.com
+
+# 3. Instalar dependências
+sudo apt update && sudo apt upgrade -y
+sudo apt install python3 python3-pip python3-venv nginx -y
+
+# 4. Configurar aplicação
+sudo mkdir -p /var/www/agente
+cd /var/www/agente
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# 5. Configurar Gunicorn
+pip install gunicorn
+gunicorn --bind 0.0.0.0:5000 app:app
+
+# 6. Configurar Nginx
+sudo nano /etc/nginx/sites-available/agente
+# Adicionar configuração do proxy
+
+# 7. Configurar SSL
+sudo apt install certbot python3-certbot-nginx -y
+sudo certbot --nginx -d seu-dominio.com
+
+## ⚡ MÉTODO 3: LAMBDA (SERVERLESS)
+
+# 1. Instalar SAM CLI
+pip install aws-sam-cli
+
+# 2. Construir aplicação
+sam build
+
+# 3. Deploy
+sam deploy --guided
+
+# 4. Testar
+sam local start-api
+
+## 🐳 MÉTODO 4: DOCKER + ECR
+
+# 1. Criar repositório ECR
+aws ecr create-repository --repository-name agente-ia
+
+# 2. Fazer login no ECR
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.us-east-1.amazonaws.com
+
+# 3. Build da imagem
+docker build -t agente-ia .
+
+# 4. Tag da imagem
+docker tag agente-ia:latest 123456789012.dkr.ecr.us-east-1.amazonaws.com/agente-ia:latest
+
+# 5. Push para ECR
+docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/agente-ia:latest
+
+## 🔧 COMANDOS ÚTEIS:
+
+# Ver status da aplicação
+eb status
+
+# Ver logs em tempo real
+eb logs --all
+
+# Configurar variáveis de ambiente
+eb setenv VARIAVEL=valor
+
+# Abrir aplicação no navegador
+eb open
+
+# Terminar ambiente
+eb terminate
+
+# Listar ambientes
+eb list
+
+# Trocar de ambiente
+eb use nome-do-ambiente

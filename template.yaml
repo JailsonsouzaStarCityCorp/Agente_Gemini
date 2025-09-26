@@ -1,0 +1,46 @@
+
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Agente de IA Serverless
+
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: python3.9
+    Environment:
+      Variables:
+        GEMINI_API_KEY: !Ref GeminiApiKey
+        SECRET_KEY: !Ref SecretKey
+
+Parameters:
+  GeminiApiKey:
+    Type: String
+    Description: Gemini API Key
+    NoEcho: true
+  SecretKey:
+    Type: String
+    Description: Secret Key for Flask
+    NoEcho: true
+
+Resources:
+  AgenteFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: app.lambda_handler
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+        RootApi:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
+
+Outputs:
+  AgenteApi:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

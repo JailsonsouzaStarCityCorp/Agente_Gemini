@@ -1,0 +1,39 @@
+
+# 🔧 COMANDOS SSH ÚTEIS PARA HOSTINGER
+
+## 📁 NAVEGAÇÃO:
+cd public_html                    # Ir para pasta da aplicação
+ls -la                           # Listar arquivos
+pwd                              # Mostrar diretório atual
+
+## 🐍 PYTHON:
+python3 --version                # Verificar versão Python
+pip3 --version                   # Verificar versão pip
+pip3 install -r requirements.txt # Instalar dependências
+
+## 📊 VERIFICAR APLICAÇÃO:
+python3 -c "import flask; print('Flask OK')"  # Testar Flask
+python3 -c "from app import app; print('App OK')"  # Testar app
+
+## 🔍 LOGS:
+tail -f error.log                # Ver logs de erro
+tail -f access.log               # Ver logs de acesso
+
+## 🔐 PERMISSÕES:
+chmod 755 uploads/               # Definir permissão uploads
+chmod 644 *.py                   # Definir permissão arquivos Python
+chmod 644 .htaccess              # Definir permissão .htaccess
+
+## 🗂️ ESTRUTURA:
+find . -name "*.py"              # Encontrar arquivos Python
+find . -name "*.html"            # Encontrar templates
+ls -la templates/                # Listar templates
+ls -la static/                   # Listar arquivos estáticos
+
+## 🧪 TESTE:
+curl http://localhost:5000       # Testar aplicação localmente
+curl -I https://seudominio.com   # Testar resposta HTTP
+
+## 🔧 MANUTENÇÃO:
+ps aux | grep python             # Ver processos Python
+kill -9 PID                      # Matar processo (substitua PID)

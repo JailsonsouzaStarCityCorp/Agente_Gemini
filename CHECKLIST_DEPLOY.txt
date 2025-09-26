@@ -1,0 +1,64 @@
+
+# ✅ CHECKLIST DE DEPLOY NO HOSTINGER
+
+## 📋 ANTES DO DEPLOY:
+- [ ] Conta no Hostinger ativa
+- [ ] Domínio configurado
+- [ ] Arquivo agente_deploy.zip baixado
+
+## 🚀 PROCESSO DE DEPLOY:
+
+### 1. CONFIGURAR PYTHON:
+- [ ] Acessar painel do Hostinger
+- [ ] Ir para "Python" ou "Aplicações Python"
+- [ ] Selecionar domínio
+- [ ] Configurar versão Python 3.8+
+- [ ] Definir arquivo de entrada: wsgi.py
+- [ ] Salvar configurações
+
+### 2. UPLOAD DOS ARQUIVOS:
+- [ ] Ir para "Gerenciador de Arquivos"
+- [ ] Navegar até public_html
+- [ ] Fazer upload do agente_deploy.zip
+- [ ] Extrair arquivo ZIP
+- [ ] Verificar se todos os arquivos foram extraídos
+
+### 3. CONFIGURAR VARIÁVEIS:
+- [ ] Ir para "Variáveis de Ambiente"
+- [ ] Adicionar SECRET_KEY
+- [ ] Adicionar GEMINI_API_KEY
+- [ ] Adicionar OPENAI_API_KEY
+- [ ] Adicionar DATABASE_URL
+- [ ] Salvar todas as variáveis
+
+### 4. INSTALAR DEPENDÊNCIAS:
+- [ ] Ir para "Terminal" ou "SSH"
+- [ ] Executar: cd public_html
+- [ ] Executar: pip install -r requirements.txt
+- [ ] Aguardar instalação completa
+
+### 5. CONFIGURAR PERMISSÕES:
+- [ ] Selecionar pasta uploads/
+- [ ] Definir permissão 755 ou 777
+- [ ] Aplicar permissões
+
+### 6. TESTAR APLICAÇÃO:
+- [ ] Acessar https://seudominio.com
+- [ ] Verificar se página carrega
+- [ ] Testar chat de suporte
+- [ ] Testar criação de conteúdo
+- [ ] Testar upload de arquivos
+- [ ] Verificar dashboard
+
+## 🎯 RESULTADO ESPERADO:
+- [ ] Página inicial carrega
+- [ ] Todas as funcionalidades operacionais
+- [ ] Interface responsiva
+- [ ] Performance adequada
+
+## 🆘 SE ALGO DER ERRADO:
+- [ ] Verificar logs de erro
+- [ ] Confirmar configurações Python
+- [ ] Verificar variáveis de ambiente
+- [ ] Testar permissões
+- [ ] Contatar suporte Hostinger

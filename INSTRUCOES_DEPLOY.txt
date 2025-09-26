@@ -1,0 +1,49 @@
+
+# 🚀 INSTRUÇÕES DE DEPLOY NO HOSTINGER
+
+## 📋 PASSOS PARA DEPLOY:
+
+### 1. Upload dos Arquivos:
+- Acesse o painel do Hostinger
+- Vá para "Gerenciador de Arquivos"
+- Navegue até a pasta `public_html`
+- Faça upload do arquivo `agente_deploy.zip`
+- Extraia o arquivo na pasta `public_html`
+
+### 2. Configurar Variáveis de Ambiente:
+- No painel do Hostinger, vá para "Variáveis de Ambiente"
+- Adicione as seguintes variáveis:
+  - SECRET_KEY: sua_chave_secreta_super_segura
+  - GEMINI_API_KEY: sua_chave_gemini
+  - OPENAI_API_KEY: sua_chave_openai
+  - DATABASE_URL: sqlite:///agente_prod.db
+
+### 3. Configurar Python:
+- No painel do Hostinger, vá para "Python"
+- Selecione a versão Python 3.8 ou superior
+- Configure o arquivo de entrada como `wsgi.py`
+
+### 4. Testar Aplicação:
+- Acesse seu domínio
+- Teste todas as funcionalidades
+- Verifique se está funcionando corretamente
+
+## 🔧 SOLUÇÃO DE PROBLEMAS:
+
+### Erro 500:
+- Verifique os logs de erro
+- Confirme se todas as dependências estão instaladas
+- Verifique as variáveis de ambiente
+
+### Erro de Importação:
+- Confirme se todos os arquivos foram enviados
+- Verifique se o Python está configurado corretamente
+
+### Erro de Permissão:
+- Verifique as permissões dos arquivos
+- Confirme se o diretório uploads tem permissão de escrita
+
+## 📞 SUPORTE:
+- Consulte a documentação do Hostinger
+- Entre em contato com o suporte técnico
+- Verifique os logs de erro para mais detalhes

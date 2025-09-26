@@ -1,0 +1,20 @@
+{
+  "arquivo_origem": "uploads\\M7 - vendas-por-fatura (1).xlsx",
+  "resumo": {
+    "total_linhas": 25953,
+    "colunas": [
+      "N° da fatura",
+      "Data da fatura",
+      "ID Cliente",
+      "País",
+      "Quantidade",
+      "Valor"
+    ],
+    "vendas_totais": 0,
+    "periodo": "Período não especificado",
+    "timestamp_processamento": "2025-09-25T19:59:04.662425"
+  },
+  "insights": "Erro na análise: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions",
+  "timestamp": "2025-09-25T19:59:04.941695",
+  "status": "concluido"
+}

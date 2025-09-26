@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+
+{% block title %}Agente de Suporte - Sistema de Agentes de IA{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-headset me-2"></i>Agente de Suporte</h2>
+            <span class="badge bg-success">Online</span>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Chat Interface -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-comments me-2"></i>
+                    Chat de Suporte
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Chat Messages -->
+                <div id="chat-messages" class="chat-messages mb-3" style="height: 400px; overflow-y: auto; border: 1px solid #dee2e6; padding: 15px; border-radius: 5px;">
+                    <div class="message bot-message">
+                        <div class="d-flex align-items-start">
+                            <div class="avatar me-3">
+                                <i class="fas fa-robot fa-2x text-primary"></i>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-bubble bg-light p-3 rounded">
+                                    <p class="mb-0">Olá! 👋 Sou o Agente de Suporte. Como posso te ajudar hoje?</p>
+                                </div>
+                                <small class="text-muted">Agora</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <form id="chat-form">
+                    <div class="input-group">
+                        <input type="text" id="chat-input" class="form-control" placeholder="Digite sua pergunta..." required>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-md-4">
+        <!-- Urgência -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Classificação de Urgência
+                </h6>
+            </div>
+            <div class="card-body">
+                <div id="urgencia-display">
+                    <p class="text-muted mb-0">Aguardando pergunta...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estatísticas -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    Estatísticas
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-6">
+                        <h4 class="text-primary mb-0" id="total-atendimentos">0</h4>
+                        <small class="text-muted">Atendimentos</small>
+                    </div>
+                    <div class="col-6">
+                        <h4 class="text-success mb-0" id="taxa-sucesso">0%</h4>
+                        <small class="text-muted">Taxa Sucesso</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Perguntas Frequentes -->
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-question-circle me-2"></i>
+                    Perguntas Frequentes
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <button class="list-group-item list-group-item-action border-0 p-2" onclick="enviarPergunta('Como faço um pedido?')">
+                        <small>Como faço um pedido?</small>
+                    </button>
+                    <button class="list-group-item list-group-item-action border-0 p-2" onclick="enviarPergunta('Qual o prazo de entrega?')">
+                        <small>Qual o prazo de entrega?</small>
+                    </button>
+                    <button class="list-group-item list-group-item-action border-0 p-2" onclick="enviarPergunta('Posso cancelar meu pedido?')">
+                        <small>Posso cancelar meu pedido?</small>
+                    </button>
+                    <button class="list-group-item list-group-item-action border-0 p-2" onclick="enviarPergunta('Quais as formas de pagamento?')">
+                        <small>Quais as formas de pagamento?</small>
+                    </button>
+                    <button class="list-group-item list-group-item-action border-0 p-2" onclick="enviarPergunta('Como faço uma devolução?')">
+                        <small>Como faço uma devolução?</small>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.chat-messages {
+    background-color: #f8f9fa;
+}
+
+.message {
+    margin-bottom: 15px;
+}
+
+.message-bubble {
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.bot-message .message-bubble {
+    background-color: #e3f2fd;
+}
+
+.user-message .message-bubble {
+    background-color: #007bff;
+    color: white;
+    margin-left: auto;
+}
+
+.user-message {
+    flex-direction: row-reverse;
+}
+
+.user-message .avatar {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.urgencia-baixa {
+    color: #28a745;
+}
+
+.urgencia-media {
+    color: #ffc107;
+}
+
+.urgencia-alta {
+    color: #dc3545;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let contadorAtendimentos = 0;
+
+function enviarPergunta(pergunta) {
+    document.getElementById('chat-input').value = pergunta;
+    document.getElementById('chat-form').dispatchEvent(new Event('submit'));
+}
+
+function adicionarMensagem(mensagem, isUser = false) {
+    const chatMessages = document.getElementById('chat-messages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+    
+    const now = new Date().toLocaleTimeString();
+    
+    messageDiv.innerHTML = `
+        <div class="d-flex align-items-start">
+            <div class="avatar me-3">
+                <i class="fas fa-${isUser ? 'user' : 'robot'} fa-2x text-${isUser ? 'secondary' : 'primary'}"></i>
+            </div>
+            <div class="message-content">
+                <div class="message-bubble ${isUser ? 'bg-primary text-white' : 'bg-light'} p-3 rounded">
+                    <p class="mb-0">${mensagem}</p>
+                </div>
+                <small class="text-muted">${now}</small>
+            </div>
+        </div>
+    `;
+    
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function atualizarUrgencia(urgencia) {
+    const urgenciaDisplay = document.getElementById('urgencia-display');
+    const urgenciaClass = `urgencia-${urgencia.toLowerCase()}`;
+    
+    urgenciaDisplay.innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="fas fa-circle ${urgenciaClass} me-2"></i>
+            <span class="${urgenciaClass} fw-bold">${urgencia}</span>
+        </div>
+    `;
+}
+
+function atualizarEstatisticas() {
+    contadorAtendimentos++;
+    document.getElementById('total-atendimentos').textContent = contadorAtendimentos;
+    document.getElementById('taxa-sucesso').textContent = '100%';
+}
+
+document.getElementById('chat-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const input = document.getElementById('chat-input');
+    const pergunta = input.value.trim();
+    
+    if (!pergunta) return;
+    
+    // Adicionar mensagem do usuário
+    adicionarMensagem(pergunta, true);
+    input.value = '';
+    
+    // Mostrar loading
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'message bot-message';
+    loadingDiv.innerHTML = `
+        <div class="d-flex align-items-start">
+            <div class="avatar me-3">
+                <i class="fas fa-robot fa-2x text-primary"></i>
+            </div>
+            <div class="message-content">
+                <div class="message-bubble bg-light p-3 rounded">
+                    <p class="mb-0">
+                        <i class="fas fa-spinner fa-spin me-2"></i>
+                        Processando sua pergunta...
+                    </p>
+                </div>
+            </div>
+        </div>
+    `;
+    document.getElementById('chat-messages').appendChild(loadingDiv);
+    
+    try {
+        const response = await fetch('/api/suporte', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ pergunta: pergunta })
+        });
+        
+        const data = await response.json();
+        
+        // Remover loading
+        loadingDiv.remove();
+        
+        if (data.sucesso) {
+            adicionarMensagem(data.resposta);
+            atualizarUrgencia(data.urgencia);
+            atualizarEstatisticas();
+        } else {
+            adicionarMensagem('Desculpe, ocorreu um erro. Tente novamente.');
+        }
+    } catch (error) {
+        loadingDiv.remove();
+        adicionarMensagem('Erro de conexão. Verifique sua internet.');
+    }
+});
+</script>
+{% endblock %}

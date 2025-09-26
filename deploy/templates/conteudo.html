@@ -1,0 +1,362 @@
+{% extends "base.html" %}
+
+{% block title %}Agente de Conteúdo - Sistema de Agentes de IA{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-pen me-2"></i>Agente de Conteúdo</h2>
+            <span class="badge bg-success">Online</span>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Formulário de Criação -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    Criar Conteúdo
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Tipo de Conteúdo -->
+                <div class="mb-3">
+                    <label class="form-label">Tipo de Conteúdo</label>
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="tipo-conteudo" id="tipo-post" value="post" checked>
+                        <label class="btn btn-outline-primary" for="tipo-post">
+                            <i class="fas fa-share-alt me-1"></i>Post
+                        </label>
+                        
+                        <input type="radio" class="btn-check" name="tipo-conteudo" id="tipo-newsletter" value="newsletter">
+                        <label class="btn btn-outline-primary" for="tipo-newsletter">
+                            <i class="fas fa-envelope me-1"></i>Newsletter
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Formulário para Post -->
+                <div id="form-post">
+                    <div class="mb-3">
+                        <label for="tema" class="form-label">Tema do Post</label>
+                        <input type="text" class="form-control" id="tema" placeholder="Ex: Lançamento do novo produto">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="plataforma" class="form-label">Plataforma</label>
+                        <select class="form-select" id="plataforma">
+                            <option value="Instagram">Instagram</option>
+                            <option value="LinkedIn">LinkedIn</option>
+                            <option value="Twitter">Twitter</option>
+                            <option value="Facebook">Facebook</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="tom" class="form-label">Tom</label>
+                        <select class="form-select" id="tom">
+                            <option value="profissional">Profissional</option>
+                            <option value="descontraído">Descontraído</option>
+                            <option value="empolgante">Empolgante</option>
+                            <option value="informativo">Informativo</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="publico-alvo" class="form-label">Público-Alvo</label>
+                        <input type="text" class="form-control" id="publico-alvo" placeholder="Ex: jovens de 18-35 anos">
+                    </div>
+                </div>
+
+                <!-- Formulário para Newsletter -->
+                <div id="form-newsletter" style="display: none;">
+                    <div class="mb-3">
+                        <label for="topicos" class="form-label">Tópicos (separados por vírgula)</label>
+                        <textarea class="form-control" id="topicos" rows="3" placeholder="Ex: Tendências do mercado, Novos recursos, Cases de sucesso"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="publico-newsletter" class="form-label">Público-Alvo</label>
+                        <input type="text" class="form-control" id="publico-newsletter" placeholder="Ex: gestores de marketing">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="empresa" class="form-label">Empresa</label>
+                        <input type="text" class="form-control" id="empresa" placeholder="Ex: TechCorp" value="Nossa empresa">
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary w-100" onclick="gerarConteudo()">
+                    <i class="fas fa-magic me-2"></i>Gerar Conteúdo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resultado -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-file-alt me-2"></i>
+                    Conteúdo Gerado
+                </h5>
+            </div>
+            <div class="card-body">
+                <div id="resultado-conteudo">
+                    <div class="text-center text-muted py-5">
+                        <i class="fas fa-file-alt fa-3x mb-3"></i>
+                        <p>O conteúdo gerado aparecerá aqui</p>
+                    </div>
+                </div>
+                
+                <div id="acoes-conteudo" style="display: none;" class="mt-3">
+                    <div class="btn-group w-100" role="group">
+                        <button type="button" class="btn btn-outline-primary" onclick="copiarConteudo()">
+                            <i class="fas fa-copy me-1"></i>Copiar
+                        </button>
+                        <button type="button" class="btn btn-outline-success" onclick="salvarConteudo()">
+                            <i class="fas fa-save me-1"></i>Salvar
+                        </button>
+                        <button type="button" class="btn btn-outline-info" onclick="compartilharConteudo()">
+                            <i class="fas fa-share me-1"></i>Compartilhar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Templates Rápidos -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-bolt me-2"></i>
+                    Templates Rápidos
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button class="btn btn-outline-primary w-100" onclick="usarTemplate('lançamento')">
+                            <i class="fas fa-rocket me-2"></i>Lançamento
+                        </button>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <button class="btn btn-outline-success w-100" onclick="usarTemplate('promoção')">
+                            <i class="fas fa-percentage me-2"></i>Promoção
+                        </button>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <button class="btn btn-outline-info w-100" onclick="usarTemplate('educativo')">
+                            <i class="fas fa-graduation-cap me-2"></i>Educativo
+                        </button>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <button class="btn btn-outline-warning w-100" onclick="usarTemplate('engajamento')">
+                            <i class="fas fa-heart me-2"></i>Engajamento
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Alternar entre formulários
+document.querySelectorAll('input[name="tipo-conteudo"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const formPost = document.getElementById('form-post');
+        const formNewsletter = document.getElementById('form-newsletter');
+        
+        if (this.value === 'post') {
+            formPost.style.display = 'block';
+            formNewsletter.style.display = 'none';
+        } else {
+            formPost.style.display = 'none';
+            formNewsletter.style.display = 'block';
+        }
+    });
+});
+
+function usarTemplate(tipo) {
+    const templates = {
+        'lançamento': {
+            tema: 'Lançamento do novo produto',
+            tom: 'empolgante',
+            publico: 'clientes ativos'
+        },
+        'promoção': {
+            tema: 'Promoção especial de fim de ano',
+            tom: 'empolgante',
+            publico: 'todos os clientes'
+        },
+        'educativo': {
+            tema: 'Dicas importantes sobre nosso produto',
+            tom: 'informativo',
+            publico: 'usuários iniciantes'
+        },
+        'engajamento': {
+            tema: 'Pergunta para engajar nossa comunidade',
+            tom: 'descontraído',
+            publico: 'seguidores ativos'
+        }
+    };
+    
+    const template = templates[tipo];
+    if (template) {
+        document.getElementById('tema').value = template.tema;
+        document.getElementById('tom').value = template.tom;
+        document.getElementById('publico-alvo').value = template.publico;
+        document.getElementById('tipo-post').checked = true;
+        document.getElementById('form-post').style.display = 'block';
+        document.getElementById('form-newsletter').style.display = 'none';
+    }
+}
+
+async function gerarConteudo() {
+    const tipo = document.querySelector('input[name="tipo-conteudo"]:checked').value;
+    const resultadoDiv = document.getElementById('resultado-conteudo');
+    const acoesDiv = document.getElementById('acoes-conteudo');
+    
+    // Mostrar loading
+    resultadoDiv.innerHTML = `
+        <div class="text-center py-5">
+            <i class="fas fa-spinner fa-spin fa-3x text-primary mb-3"></i>
+            <p>Gerando conteúdo...</p>
+        </div>
+    `;
+    
+    try {
+        let data;
+        
+        if (tipo === 'post') {
+            const tema = document.getElementById('tema').value;
+            const plataforma = document.getElementById('plataforma').value;
+            const tom = document.getElementById('tom').value;
+            const publicoAlvo = document.getElementById('publico-alvo').value;
+            
+            if (!tema) {
+                throw new Error('Tema é obrigatório');
+            }
+            
+            data = {
+                tipo: 'post',
+                tema: tema,
+                plataforma: plataforma,
+                tom: tom,
+                publico_alvo: publicoAlvo
+            };
+        } else {
+            const topicos = document.getElementById('topicos').value;
+            const publicoNewsletter = document.getElementById('publico-newsletter').value;
+            const empresa = document.getElementById('empresa').value;
+            
+            if (!topicos || !publicoNewsletter) {
+                throw new Error('Tópicos e público-alvo são obrigatórios');
+            }
+            
+            data = {
+                tipo: 'newsletter',
+                topicos: topicos.split(',').map(t => t.trim()),
+                publico_alvo: publicoNewsletter,
+                empresa: empresa
+            };
+        }
+        
+        const response = await fetch('/api/conteudo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.sucesso) {
+            resultadoDiv.innerHTML = `
+                <div class="conteudo-gerado">
+                    <div class="mb-3">
+                        <span class="badge bg-primary">${result.plataforma || 'Newsletter'}</span>
+                        <span class="badge bg-secondary">${new Date().toLocaleString()}</span>
+                    </div>
+                    <div class="conteudo-texto" style="white-space: pre-wrap; line-height: 1.6;">${result.conteudo}</div>
+                </div>
+            `;
+            acoesDiv.style.display = 'block';
+        } else {
+            resultadoDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    ${result.erro}
+                </div>
+            `;
+        }
+    } catch (error) {
+        resultadoDiv.innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Erro: ${error.message}
+            </div>
+        `;
+    }
+}
+
+function copiarConteudo() {
+    const conteudoTexto = document.querySelector('.conteudo-texto');
+    if (conteudoTexto) {
+        navigator.clipboard.writeText(conteudoTexto.textContent).then(() => {
+            // Mostrar feedback
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check me-1"></i>Copiado!';
+            btn.classList.remove('btn-outline-primary');
+            btn.classList.add('btn-success');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-outline-primary');
+            }, 2000);
+        });
+    }
+}
+
+function salvarConteudo() {
+    const conteudoTexto = document.querySelector('.conteudo-texto');
+    if (conteudoTexto) {
+        const blob = new Blob([conteudoTexto.textContent], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `conteudo_${new Date().toISOString().slice(0, 10)}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+}
+
+function compartilharConteudo() {
+    const conteudoTexto = document.querySelector('.conteudo-texto');
+    if (conteudoTexto && navigator.share) {
+        navigator.share({
+            title: 'Conteúdo Gerado pelo Agente de IA',
+            text: conteudoTexto.textContent
+        });
+    } else {
+        // Fallback para copiar
+        copiarConteudo();
+    }
+}
+</script>
+{% endblock %}

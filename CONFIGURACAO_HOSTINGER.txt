@@ -1,0 +1,37 @@
+
+# CONFIGURAÇÃO PARA HOSTINGER
+# Copie estas configurações no painel do Hostinger
+
+# Variáveis de Ambiente:
+SECRET_KEY=sua_chave_secreta_muito_segura_123456789
+GEMINI_API_KEY=AIzaSyBxEyDUMNA746H9kblcBCxtw8u8vDstvr8
+OPENAI_API_KEY=sua_chave_openai_se_tiver
+DATABASE_URL=sqlite:///agente_prod.db
+FLASK_ENV=production
+DEBUG=False
+
+# Configurações do Python:
+Versão: Python 3.8 ou superior
+Arquivo de entrada: wsgi.py
+Pasta: public_html
+
+# Permissões necessárias:
+uploads/ - 755 ou 777
+static/ - 755
+templates/ - 755
+
+# Estrutura de arquivos esperada:
+public_html/
+├── wsgi.py
+├── app.py
+├── .htaccess
+├── config_prod.py
+├── requirements.txt
+├── agente_*.py
+├── config.py
+├── database.py
+├── integracoes.py
+├── utils.py
+├── templates/
+├── static/
+└── uploads/

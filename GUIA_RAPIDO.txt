@@ -1,0 +1,47 @@
+
+# ⚡ GUIA RÁPIDO - DEPLOY NO HOSTINGER
+
+## 🚀 EM 5 MINUTOS:
+
+### 1. PYTHON:
+- Painel → Python → Configurar
+- Versão: 3.8+ | Entrada: wsgi.py
+
+### 2. UPLOAD:
+- Gerenciador → public_html
+- Upload: agente_deploy.zip
+- Extrair arquivo
+
+### 3. VARIÁVEIS:
+- Variáveis de Ambiente
+- Adicionar: SECRET_KEY, GEMINI_API_KEY, DATABASE_URL
+
+### 4. DEPENDÊNCIAS:
+- Terminal → cd public_html
+- pip install -r requirements.txt
+
+### 5. TESTE:
+- https://seudominio.com
+- ✅ Funcionando!
+
+## 🆘 PROBLEMAS COMUNS:
+
+### Erro 500:
+- Verificar Python configurado
+- Confirmar wsgi.py como entrada
+- Instalar dependências
+
+### Erro 404:
+- Extrair arquivos do ZIP
+- Verificar .htaccess
+- Confirmar estrutura
+
+### Erro Import:
+- pip install -r requirements.txt
+- Python 3.8+
+- Verificar imports
+
+## 📞 SUPORTE:
+- Chat Hostinger
+- Ticket suporte
+- Documentação
